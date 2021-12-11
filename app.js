@@ -1,26 +1,22 @@
-const { MongoClient } = require("mongodb");
+const MongoClient = require("mongodb").MongoClient;
+const assert = require("assert");
 
-// Replace the uri string with your MongoDB deployment's connection string.
-const uri =
-  "mongodb+srv://<user>:<password>@<cluster-url>?retryWrites=true&writeConcern=majority";
+// Connection URL
+const url = "mongodb://localhost:27017";
 
-const client = new MongoClient(uri);
+// Database name
+const dbName = "fruitDB";
 
-async function run() {
-  try {
-    await client.connect();
+// Create a new MongoClient
+const client = new MongoClient(url);
 
-    const database = client.db('sample_mflix');
-    const movies = database.collection('movies');
+// Use connect method to connect to the server
+client.connect((err) => {
+    assert.equal(null, err);
+    console.log("Connect successfully to server");
 
-    // Query for a movie that has the title 'Back to the Future'
-    const query = { title: 'Back to the Future' };
-    const movie = await movies.findOne(query);
+    const db = client.db(dbName);
 
-    console.log(movie);
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-run().catch(console.dir);
+    client.close();
+});
+
