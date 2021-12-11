@@ -9,11 +9,19 @@ async function main() {
 
 // Create fruit schema
 const fruitSchema = new mongoose.Schema({
-    name: String,
-    rating: Number,
+    name: {
+        type: String,
+        required: [true, "Please check your data entry, no name is specified."]
+    },
+    rating: {
+        type: Number,
+        min: 1,
+        max: 10
+    },
     review: String,
 });
 
+// Create Fruit model
 const Fruit = mongoose.model("Fruit", fruitSchema);
 
 const fruit = new Fruit (
@@ -42,3 +50,50 @@ const people = new Person (
 );
 
 // people.save();
+
+const kiwi = new Fruit (
+    {
+        name: "Kiwi",
+        rating: 10,
+        review: "The best fruit!"
+    }
+);
+
+const orange = new Fruit (
+    {
+        name: "Orange",
+        rating: 4,
+        review: "Kinda sour"
+    }
+);
+
+const banana = new Fruit (
+    {
+        name: "Banana",
+        rating: 3,
+        review: "Weird texture"
+    }
+);
+
+// Fruit.insertMany([kiwi, orange, banana], (err) => {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         console.log("Successfully saved all the fruits to the fruitDB");
+//         mongoose.connection.close();
+//     };
+// });
+
+Fruit.find((err, fruits) => {
+    if (err) {
+        console.log(err);
+    } else {
+        const basket = [];
+        fruits.forEach((fruit) => {
+            basket.push(fruit.name);
+        })
+        console.log(basket);
+
+        mongoose.connection.close();
+    }
+});
