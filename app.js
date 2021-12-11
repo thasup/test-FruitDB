@@ -32,20 +32,30 @@ const fruit = new Fruit (
     }
 );
 
-// fruit.save();
+const pineapple = new Fruit (
+    {
+        name: "Pineapple",
+        rating: 10,
+        review: "Super delicious fruit"
+    }
+);
+
+// pineapple.save();
 
 // Create person schema
 const personSchema = new mongoose.Schema({
     name: String,
-    age: Number
+    age: Number,
+    favouriteFruit: fruitSchema
 });
 
 const Person = mongoose.model("Person", personSchema);
 
 const people = new Person (
     {
-        name: "John",
-        age: 37
+        name: "Amy",
+        age: 12,
+        favouriteFruit: pineapple
     }
 );
 
@@ -84,16 +94,25 @@ const banana = new Fruit (
 //     };
 // });
 
-Fruit.find((err, fruits) => {
-    if (err) {
-        console.log(err);
-    } else {
-        const basket = [];
-        fruits.forEach((fruit) => {
-            basket.push(fruit.name);
-        })
-        console.log(basket);
+// Fruit.find((err, fruits) => {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         const basket = [];
+//         fruits.forEach((fruit) => {
+//             basket.push(fruit.name);
+//         })
+//         console.log(basket);
 
-        mongoose.connection.close();
-    }
-});
+//         mongoose.connection.close();
+//     }
+// });
+
+// Person.updateOne({name: "John"}, {favouriteFruit: kiwi}, (err) => {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         console.log("Successfully updated the collection");
+//         mongoose.connection.close();
+//     };
+// });
